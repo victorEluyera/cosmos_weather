@@ -1,0 +1,63 @@
+.home-container {
+  background: linear-gradient(
+    to top right,
+    black,
+    black 70%,
+    black 10%,
+    rgb(66, 63, 63)
+  );
+  color: aliceblue;
+  height: 100%;
+  margin: 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  width: 95%;
+  margin: auto;
+}
+
+.nav-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.weather-type {
+  height: 30vh;
+  margin: 70px auto;
+}
+
+.gradient-icon {
+  color: linear-gradient(to right, #ff0000, #0000ff);
+}
+.weather-information {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 10px auto 20px;
+  color: whitesmoke;
+}
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: auto;
+  color: whitesmoke;
+}
+.weather-sub-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: start;
+}
+.card-container {
+  margin: 20px;
+}
+
+.color {
+  color: #a9d6e7;
+}
