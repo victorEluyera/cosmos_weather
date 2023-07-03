@@ -13,18 +13,12 @@ interface UserLocation {
 }
 
 function Home() {
-  let lat;
-  let lon;
   const [weatherDetails, setWeatherDetails] = useState<WeatherDetailsPayLoad>({
     name: "",
     main: { humidity: "", temp: "" },
     sys: { country: "", id: 0, sunrise: 0, sunset: 0 },
     weather: [{ description: "", icon: "", main: "" }],
     wind: { speed: 0 },
-  });
-  const [location, setLocation] = useState<UserLocation>({
-    latitude: lat,
-    longitude: lon,
   });
 
   const [foreCastDetails, setForeCastDetails] = useState({
@@ -38,13 +32,15 @@ function Home() {
     ],
   });
 
+  const [location, setLocation] = useState<UserLocation>({});
+
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) =>
+    navigator.geolocation.getCurrentPosition((position) => {
       setLocation({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
-      })
-    );
+      });
+    });
   }, []);
 
   useEffect(() => {
@@ -58,7 +54,9 @@ function Home() {
         .then((response) => {
           setForeCastDetails(response.data);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.error("Error fetching forecast data:", error);
+        });
     }
   }, [location]);
 
@@ -73,14 +71,20 @@ function Home() {
         .then((response) => {
           setWeatherDetails(response.data);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.error("Error fetching weather data:", error);
+        });
     }
   }, [location]);
 
+  console.log(weatherDetails);
+  console.log(foreCastDetails);
   let iconName = weatherDetails.weather[0]?.icon;
-  let countryName = weatherDetails.sys.country;
+  let countryName = weatherDetails.sys?.country;
   let icon = `http://openweathermap.org/img/wn/${iconName}@2x.png`;
-  const countryFlag = `http://openweathermap.org/images/flags/${countryName.toLowerCase()}.png`;
+  const countryFlag = `http://openweathermap.org/images/flags/${countryName?.toLowerCase()}.png`;
+
+  console.log("big");
   return (
     <div className="home-container">
       <div className="nav">
@@ -119,28 +123,28 @@ function Home() {
           />
         </div>
         <h3 style={{ fontSize: "20px" }}>
-          {weatherDetails.weather[0].description}
+          {weatherDetails.weather[0]?.description}
         </h3>
       </div>
       <WeatherDetails
         wind={weatherDetails.wind?.speed}
-        humidity={weatherDetails.main.humidity}
-        temp={weatherDetails.main.temp}
-        sunrise={weatherDetails.sys.sunrise}
-        sunset={weatherDetails.sys.sunset}
+        humidity={weatherDetails.main?.humidity}
+        temp={weatherDetails.main?.temp}
+        sunrise={weatherDetails.sys?.sunrise}
+        sunset={weatherDetails.sys?.sunset}
       />
       <div className="card-container">
         <div className="ui three stackable cards">
           {foreCastDetails.list.map((info, index) => (
             <Card
-              wind={info.wind.speed}
-              humidity={info.main.humidity}
-              temp={info.main.temp}
+              wind={info.wind?.speed}
+              humidity={info.main?.humidity}
+              temp={info.main?.temp}
               country={countryFlag}
               date={info.dt_txt}
               countryName={weatherDetails.name}
-              description={info.weather[0].description}
-              icon={info.weather[0].icon}
+              description={info.weather[0]?.description}
+              icon={info.weather[0]?.icon}
               key={index}
             />
           ))}
